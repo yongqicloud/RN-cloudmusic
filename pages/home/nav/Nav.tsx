@@ -5,7 +5,7 @@ import styles from './style_nav'
 interface Props{
 
 }
-export default function Nav(props: Props) {
+function Nav(props: Props) {
   const navigationController: any = useContext(navigationContext)
   const handlePress = (payload) => ()=> {
     navigationController.navigation.push(payload.navigation,{id: payload.id})
@@ -68,3 +68,4 @@ export default function Nav(props: Props) {
     </View>
   )
 }
+export default React.memo(Nav)

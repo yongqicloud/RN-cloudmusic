@@ -89,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 // export default Album
-export default connect(mapStateToProps, mapDispatchToProps)(Album);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Album));

@@ -169,4 +169,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Rank)
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Rank))

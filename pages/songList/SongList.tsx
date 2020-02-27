@@ -7,7 +7,7 @@ interface Props{
   collectCount: number,
   showCollect: boolean,
 }
-export default function SongList(props: Props) {
+function SongList(props: Props) {
   const { songs, collectCount } = props
   const totalCount = songs.length
 
@@ -95,3 +95,5 @@ export default function SongList(props: Props) {
     </View>
   )
 }
+
+export default React.memo(SongList)

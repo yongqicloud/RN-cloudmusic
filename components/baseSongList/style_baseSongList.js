@@ -14,7 +14,7 @@ export default StyleSheet.create({
   itemContainer: {
     width: itemWidth,
     height: itemWidth,
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
     borderRadius: 10,
     overflow: "hidden",
     position: "relative",

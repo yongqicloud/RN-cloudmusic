@@ -5,7 +5,7 @@ import styles from './style_swiper'
 interface Props {
   swiperList: Array<object>
 }
-export default function Swiper(props: Props) {
+function Swiper(props: Props) {
 
   const { swiperList } = props
   if(!swiperList.length){
@@ -41,3 +41,5 @@ export default function Swiper(props: Props) {
     </View>
   )
 }
+
+export default React.memo(Swiper)

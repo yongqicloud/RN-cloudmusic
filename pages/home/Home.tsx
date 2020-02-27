@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import Header from './header/Header'
+import Header from '../../baseUI/header/Header'
 import Swiper from './swiper/Swiper'
 import SliderWrapper from '../../components/sliderWrapper/SliderWrapper'
 import BaseSongList from '../../components/baseSongList/BaseSongList'
@@ -7,7 +7,7 @@ import Nav from './nav/Nav'
 import { getBannerRequest, getRecommendListRequest } from '../../api/request'
 import { View, ScrollView, Text } from 'react-native'
 // import { navigationContext } from '../../context/navigation'
-export default function Home(props) {
+function Home(props) {
   // 备用
   // let navigationController = useContext(navigationContext)
 
@@ -52,7 +52,9 @@ export default function Home(props) {
 
   return (
     <>
-      <Header />  
+      <Header 
+        title={'云音乐'}
+      />  
       <ScrollView 
         style={{ flex: 1}}
       >
@@ -67,9 +69,11 @@ export default function Home(props) {
         </SliderWrapper>
         
         <View>
-          <Text>------------我是底线--------</Text>
+          <Text>----------------我是底线----------------</Text>
         </View>
       </ScrollView>
     </>
   )
 }
+
+export default React.memo(Home)

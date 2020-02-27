@@ -35,6 +35,6 @@ export default StyleSheet.create({
   scrollView: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: '#eee'
+    // backgroundColor: '#eee'
   }
 })

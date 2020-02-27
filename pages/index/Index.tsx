@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import TabNavigator from 'react-native-tab-navigator';
 import Home from '../home/Home'
+import Singers from '../singers/Singers'
 import { View, Image, Text } from 'react-native'
 import styles from './style_index'
 import { Provider } from '../../context/navigation'
 
-export default function Album (props) {
+function Index (props) {
   let [state,setState] = useState({
     selectedTab: 'home'
   })
@@ -45,7 +46,7 @@ export default function Album (props) {
             selectedTitleStyle={styles.selectedTitleText}
             onPress={() => setState({ selectedTab: 'singers' })}
           >
-            {<Text>3</Text>}
+            {<Singers></Singers>}
           </TabNavigator.Item>
           <TabNavigator.Item
             selected={state.selectedTab === 'mine'}
@@ -62,3 +63,5 @@ export default function Album (props) {
     </View>
   )
 }
+
+export default React.memo(Index)

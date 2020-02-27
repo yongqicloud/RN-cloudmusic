@@ -4,6 +4,7 @@ import { Dimensions } from 'react-native'
 // 获取设备宽度
 const { width} = Dimensions.get('window')
 const ITEM_WIDTH = (width - 2 * globalStyles['safety-padding-horizontal'] - 20)/ 3
+const OFFICAL_IMG_WIDTH = Math.floor(width / 4)
 console.log('width: ', width);
 export default StyleSheet.create({
   pageContainer: {
@@ -26,14 +27,14 @@ export default StyleSheet.create({
   },
   officialItem: {
     width: '100%',
-    height: 100,
+    height: OFFICAL_IMG_WIDTH,
     // backgroundColor: 'yellow',
     flexDirection: "row",
     marginBottom: 10,
   },
   imgContainer: {
-    width: 100,
-    height: 100,
+    width: OFFICAL_IMG_WIDTH,
+    height: OFFICAL_IMG_WIDTH,
     borderRadius: 5,
     overflow: "hidden",
     // backgroundColor: 'green',
