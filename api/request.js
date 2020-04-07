@@ -33,3 +33,7 @@ export const getHotSingerListRequest = (count) => {
 export const getSingerListRequest= (category, alpha, count) => {
   return axiosInstance.get(`/artist/list?cat=${category}&initial=${alpha.toLowerCase()}&offset=${count}`);
 }
+// 热门搜索
+export const getHotKeyWordsRequest = () => {
+  return axiosInstance.get (`/search/hot`);
+};

@@ -1,16 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect,useRef, useContext} from 'react'
+import { StyleSheet } from 'react-native'
 import Header from '../../baseUI/header/Header'
 import Swiper from './swiper/Swiper'
 import SliderWrapper from '../../components/sliderWrapper/SliderWrapper'
 import BaseSongList from '../../components/baseSongList/BaseSongList'
 import Nav from './nav/Nav'
+import Player from '../../components/player/player'
 import { getBannerRequest, getRecommendListRequest } from '../../api/request'
 import { View, ScrollView, Text } from 'react-native'
-// import { navigationContext } from '../../context/navigation'
 function Home(props) {
-  // 备用
-  // let navigationController = useContext(navigationContext)
-
+  const videoRef = useRef(null)
   let [swiperList, setSwiperList] = useState([])
   let [recommendList, setRecommentList] = useState([])
   // 轮播数据
@@ -49,11 +48,10 @@ function Home(props) {
     }
     fetchRecommendData()
   },[])
-
   return (
     <>
       <Header 
-        title={'云音乐'}
+        title={'智慧音乐'}
       />  
       <ScrollView 
         style={{ flex: 1}}
@@ -61,16 +59,12 @@ function Home(props) {
         <Swiper swiperList={swiperList}/>
         <Nav />
         <SliderWrapper
-          mainTitle="为你精挑细选"
+          mainTitle="让我为你唱一首歌"
           miniTitle="推荐歌单"
           buttonText="查看更多"
         >
             <BaseSongList recommendList={recommendList}></BaseSongList>
         </SliderWrapper>
-        
-        <View>
-          <Text>----------------我是底线----------------</Text>
-        </View>
       </ScrollView>
     </>
   )

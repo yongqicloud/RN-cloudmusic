@@ -50,7 +50,7 @@ export default function AlbumDetail(props) {
   }
   return (
     <View>
-      <View style={styles.topCotainer}>
+      <View style={styles.topContainer}>
         <ImageBackground
           blurRadius={25}
           style={styles.imgBackground}

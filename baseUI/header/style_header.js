@@ -10,7 +10,8 @@ export default StyleSheet.create({
     paddingTop: globalStyles['bangs-height'],
     backgroundColor: globalStyles['theme-color'],
     flexDirection:"row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
+    justifyContent:"center",
     alignItems:"center",
   },
   img:{

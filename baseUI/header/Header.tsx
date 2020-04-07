@@ -11,9 +11,9 @@ function Header(props: Props) {
     <View
       style={ styles.headerWrap }
     >
-      <Text style={{ fontFamily: 'iconfont', fontSize: 28, color: '#fff' }}>&#xe65c;</Text>
+      {/* <Text style={{ fontFamily: 'iconfont', fontSize: 28, color: '#fff' }}>&#xe65c;</Text> */}
       <Text style={styles.text}>{title}</Text>
-      <Text style={{ fontFamily: 'iconfont', fontSize: 26, color: '#fff' }}>&#xe62b;</Text>
+      {/* <Text style={{ fontFamily: 'iconfont', fontSize: 26, color: '#fff' }}>&#xe62b;</Text> */}
     </View>
   )
 }

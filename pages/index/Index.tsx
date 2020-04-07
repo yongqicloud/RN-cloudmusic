@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import TabNavigator from 'react-native-tab-navigator';
 import Home from '../home/Home'
+import Find from '../find/Find'
 import Singers from '../singers/Singers'
 import { View, Image, Text } from 'react-native'
 import styles from './style_index'
+import Player from '../../components/player/player'
 import { Provider } from '../../context/navigation'
 
 function Index (props) {
@@ -11,12 +13,18 @@ function Index (props) {
     selectedTab: 'home'
   })
   
-
   return (
     <View style={styles.layoutWrap}>
+      <Player></Player>
       <Provider value={{...props}}>
         <TabNavigator
-          tabBarStyle={{ height: 55 }}
+          tabBarStyle={{ 
+            height: 55,
+          }}
+          sceneStyle={{
+            backgroundColor: '#fbfbfb',
+            // height: 400
+          }}
         >
           <TabNavigator.Item
             selected={state.selectedTab === 'home'}
@@ -26,17 +34,17 @@ function Index (props) {
             selectedTitleStyle={styles.selectedTitleText}
             onPress={() => setState({ selectedTab: 'home' })}
           >
-            {<Home></Home>}
+            {<><Home></Home></>}
           </TabNavigator.Item>
           <TabNavigator.Item
             selected={state.selectedTab === 'recommend'}
-            title="推荐"
-            renderIcon={() => <Text style={[{fontFamily:'selffont'},styles.text]}>&#xe642;</Text>}
-            renderSelectedIcon={() => <Text style={[{fontFamily:'selffont'},styles.selectedText]}>&#xe642;</Text>}
+            title="发现"
+            renderIcon={() => <Text style={[{fontFamily:'selffont'},{color: '#000'},styles.text]}>&#xeb9c;</Text>}
+            renderSelectedIcon={() => <Text style={[{fontFamily:'selffont'},styles.selectedText]}>&#xeb9c;</Text>}
             selectedTitleStyle={styles.selectedTitleText}
             onPress={() => setState({ selectedTab: 'recommend' })}
           >
-            {<Text>2</Text>}
+            {<Find></Find>}
           </TabNavigator.Item>
           <TabNavigator.Item
             selected={state.selectedTab === 'singers'}

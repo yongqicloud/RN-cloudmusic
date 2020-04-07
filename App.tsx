@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, Text} from 'react-native'
 import Index from './pages/index/Index'
 import Album from './pages/album/Album'
 import Rank from './pages/rank/Rank'
@@ -12,6 +13,7 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font'
 // import { Header } from 'react-native/Libraries/NewAppScreen';
 const Stack = createStackNavigator();
+import Player from './components/player/player'
 
 export default class App extends React.Component {
   state = {
@@ -19,6 +21,7 @@ export default class App extends React.Component {
     currentTheme: null,
     isReady: false,
   };
+
   changeTheme = (theme, currentTheme) => {
     this.setState({ theme, currentTheme });
   };
@@ -40,7 +43,7 @@ export default class App extends React.Component {
     );
     await Font.loadAsync(
       'selffont',
-       require('./assets/fonts/iconfont/iconfont.ttf'),
+       require('./assets/fonts/selffont/iconfont.ttf'),
     );
     // eslint-disable-next-line
     this.setState({ isReady: true }); 
@@ -55,43 +58,46 @@ export default class App extends React.Component {
     }
     return (
       <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerTitle: '首页',
-            headerStyle: {
-              backgroundColor: '#ee7530'
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              flex: 1,
-              fontSize: 20
-            },
-            header: () => null
-          }}
-        >
-          <Stack.Screen 
-            name="Index" 
-            component={Index} 
-          />
-          <Stack.Screen
-            name="Album"
-            component={Album}
-            options={{
-              title: '歌单详情'
-            }}
-          />
-          <Stack.Screen
-            name="Rank"
-            component={Rank}
-            options={{
-              title: '排行榜'
-            }}
-          />
-        </Stack.Navigator>
-        
-      </NavigationContainer>
+        <View style={{flex: 1, position:"relative"}}>
+          <Player></Player>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerTitle: '首页',
+                headerStyle: {
+                  backgroundColor: '#ee7530'
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                  flex: 1,
+                  fontSize: 20
+                },
+                header: () => null
+              }}
+            >
+              
+              <Stack.Screen 
+                name="Index" 
+                component={Index} 
+              />
+              <Stack.Screen
+                name="Album"
+                component={Album}
+                options={{
+                  title: '歌单详情'
+                }}
+              />
+              <Stack.Screen
+                name="Rank"
+                component={Rank}
+                options={{
+                  title: '排行榜'
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
       </Provider>
     );
   }

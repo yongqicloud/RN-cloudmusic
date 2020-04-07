@@ -16,7 +16,12 @@ axiosInstance.interceptors.response.use(
 );
 
 export { axiosInstance };
-
+// 播放模式
+export const playMode = {
+  sequence: 0,
+  loop: 1,
+  random: 2
+};
 //歌手种类
 export const categoryTypes = [
   {

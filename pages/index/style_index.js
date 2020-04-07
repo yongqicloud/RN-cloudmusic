@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native'
 import * as Device from 'expo-device';
 import globalStyles from '../../assets/global-style'
-console.log(Device.productName )
+// console.log(Device.productName )
 export default StyleSheet.create({
   layoutWrap:{
     flex: 1,
+    // backgroundColor: 'green',
     backgroundColor:'#fff',
   },
   img: {

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-  topCotainer: {
+  topContainer: {
     width: '100%',
     height: 314,
     // overflow: "hidden",
