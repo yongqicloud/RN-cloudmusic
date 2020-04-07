@@ -15,7 +15,8 @@ export default StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 1000,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    overflow: 'hidden',
   },
   background: {
     width: '100%',
@@ -67,11 +68,11 @@ export default StyleSheet.create({
   },
   songTextWrapper: {
     width: '100%',
-    paddingHorizontal: 4 * styles['safety-padding-horizontal']
+    paddingVertical: 20,
+    paddingHorizontal: 4 * styles['safety-padding-horizontal'],
   },
   songText: {
-    paddingVertical: 10,
-    color: '#fff',
+    color: '#eae7d9',
     fontSize: 16,
     textAlign: 'center',
     fontSize: 14,
@@ -103,7 +104,7 @@ export default StyleSheet.create({
     // marginHorizontal: 5,
   },
   rateText: {
-    color: '#fcfcfc'
+    color: '#eae7d9'
   },
   progressWrapper: {
     flexDirection: 'row',
@@ -124,6 +125,6 @@ export default StyleSheet.create({
   playBtnIcon: {
     fontFamily: 'iconfont',
     fontSize: 32,
-    color: '#fcfcfc'
+    color: '#eae7d9'
   }
 })

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import { View, Text, Image, Animated, Easing, ImageBackground, TouchableOpacity } from 'react-native'
-import { getName } from '../../../api/utils'
+import { getName, formatPlayTime } from '../../../api/utils'
 import { connect } from 'react-redux'
 import {
   changePlayingState,
@@ -12,21 +12,40 @@ import {
   changeFullScreen
 } from "../store/actionCreators";
 import styles, {THEME_COLOR} from './style_normalPlayer'
-import {  Slider, WhiteSpace } from '@ant-design/react-native'
+import { playMode } from '../../../api/config'
+import {  Slider, WhiteSpace, Toast } from '@ant-design/react-native'
+
 function NormalPlayer(props) {
-  const { song, fullScreen, onMiniSizeScreen: propsOnMiniSizeScreen } = props
+  const { song, mode, playing, percent, duration, currentTime, fullScreen} = props
+  const {
+    clickPlaying, 
+    onMiniSizeScreen: propsOnMiniSizeScreen,
+    changeProgress,
+    handlePrev,
+    handleNext,
+    changePlayMode
+  } = props
   const [rotate, setRotate] = useState(new Animated.Value(0))
-  const _spin = () => {
+  let _spin = () => {
       rotate.setValue(0)
       Animated.timing(rotate,{
         toValue: 1, // 最终值 为1，这里表示最大旋转 360度
         duration: 4000,
         easing: Easing.linear
-    }).start(() => _spin())
+    }).start(() => _spin)
   }
   useEffect(()=>{
-    // _spin()
-  },[])
+    if(playing){
+      // _spin()
+    }else{
+      _spin = null
+    }
+    // mode === playMode.sequence
+    //             ? Toast.info('This is a toast tips 1 !!!', 4)
+    //             : mode === playMode.loop
+    //               ? Toast.info('This is a toast tips 1 !!!', 4)
+    //               : Toast.info('This is a toast tips 1 !!!', 4)
+  },[playing,mode])
   const _renderHeader = () => {
     return (
       <View style={styles.header}>
@@ -92,29 +111,40 @@ function NormalPlayer(props) {
           </TouchableOpacity>
         </View>
         <View style={styles.progressWrapper}>
-          <Text style={{color: '#fcfcfc'}} >0:00</Text>
+            <Text style={{color: '#fcfcfc'}} >{formatPlayTime(currentTime)}</Text>
             <View style={{flex: 1,  marginHorizontal: 15}}>
               <Slider 
                 min={1} 
                 max={100} 
+                value={percent}
                 minimumTrackTintColor={THEME_COLOR}
                 maximumTrackTintColor={'#000'}
-                onAfterChange={value=>{console.log(value)}}
+                onAfterChange={changeProgress}
               ></Slider>
             </View>
-          <Text style={{color: '#fcfcfc'}}>3:52</Text>
+            <Text style={{color: '#fcfcfc'}}>{formatPlayTime(duration)}</Text>
         </View>
         <View style={styles.btnWrapper}>
-          <TouchableOpacity>
-            <Text style={styles.playBtnIcon}>&#xe625;</Text>
+          <TouchableOpacity onPress={changePlayMode}>
+            {
+              mode === playMode.sequence
+                ? (<Text style={styles.playBtnIcon}>&#xe625;</Text>)
+                : mode === playMode.loop
+                  ? (<Text style={styles.playBtnIcon}>&#xe653;</Text>)
+                  : (<Text style={styles.playBtnIcon}>&#xe61b;</Text>)
+            }
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handlePrev}>
             <Text style={styles.playBtnIcon}>&#xe6e1;</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.playBtnIcon}>&#xe723;</Text>
+          <TouchableOpacity onPress={clickPlaying}>
+            {
+              playing 
+                ? (<Text style={styles.playBtnIcon}>&#xe650;</Text>)
+                : (<Text style={styles.playBtnIcon}>&#xe61e;</Text>)
+            }
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleNext}>
             <Text style={styles.playBtnIcon}>&#xe718;</Text>
           </TouchableOpacity>
           <TouchableOpacity>

@@ -12,5 +12,13 @@ export default StyleSheet.create({
     zIndex: 500,
     backgroundColor: 'transparent',
     // backgroundColor:'pink',
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    // zIndex: 9999,
+    width: 0,
+    height: 0,
+    left: 0,
+    bottom: 0,
   }
 })

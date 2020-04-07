@@ -1,9 +1,13 @@
 import { SET_CURRENT_SONG, SET_FULL_SCREEN, SET_PLAYING_STATE, SET_SEQUECE_PLAYLIST, SET_PLAYLIST, SET_PLAY_MODE, SET_CURRENT_INDEX, SET_SHOW_PLAYLIST, DELETE_SONG, INSERT_SONG } from './constants';
 import { fromJS } from 'immutable';
 
+// export const changeCurrentSong = (data) => ({
+//   type: SET_CURRENT_SONG,
+//   data: fromJS (data)
+// });
 export const changeCurrentSong = (data) => ({
   type: SET_CURRENT_SONG,
-  data: fromJS (data)
+  data: data
 });
 
 export const changeFullScreen =  (data) => ({

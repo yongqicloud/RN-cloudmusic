@@ -10,22 +10,21 @@ interface Props{
     ar:any,
     name: string
   },
-  onFullScreen: () => void
+  onFullScreen: () => void,
+  clickPlaying: any,
+  fullScreen: any,
+  playing: any,
+  percent: any,
 }
 
 export default function MiniPlayer(props: Props) {
   const { song, onFullScreen: propsFullScreen } = props
-
-  // return (
-  //   <View style={styles.miniContainer}>
-  //     <TouchableOpacity>
-  //       <Text>你好你死哦都市的</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  // )
+  console.log('song:::::', song)
+  const { fullScreen, playing, percent } = props;
+  const { clickPlaying, } = props;
   return (
     <View style={styles.miniContainer} pointerEvents={'auto'}>
-      <View style={{flex: 1, flexDirection: 'row',}}>
+      <View style={{flex: 1, flexDirection: 'row', alignItems: "center"}}>
         <TouchableOpacity
           style={{flexDirection: 'row', flex: 1,}}
           onPress={propsFullScreen}
@@ -43,22 +42,20 @@ export default function MiniPlayer(props: Props) {
             <Text numberOfLines={1}>{getName(song.ar)}</Text>
           </View>
         </TouchableOpacity>
-        <View style={styles.playBtnWrapper}>
-          <Text style={styles.iconfont }>&#xe650;</Text>
-        </View>
-        <View style={styles.expandBtnWrapper}>
-          <Text style={styles.iconfont}>&#xe640;</Text>
-        </View>
+        <TouchableOpacity onPress={clickPlaying} style={styles.playBtnWrapper}>
+          {
+            playing 
+              ? (<Text style={styles.iconfont}>&#xe723;</Text>)
+              : (<Text style={styles.iconfont}>&#xe6e3;</Text>)
+          }
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.expandBtnWrapper}>
+          <Text style={styles.iconfont }>&#xe640;</Text>
+        </TouchableOpacity>
       </View>
       <View style={{height: 2, width: '100%'}}>
-        {/* <Progress 
-          percent={50} 
-          position={'normal'}
-          style={styles.progress}
-          barStyle={{backgroundColor: '#ddd'}}
-        /> */}
         <MyProgress 
-          percent={20}
+          percent={percent}
           style={styles.progress}
           barStyle={styles.progressBar}  
         ></MyProgress>
