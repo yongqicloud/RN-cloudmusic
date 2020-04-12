@@ -19,9 +19,11 @@ interface Props{
 
 export default function MiniPlayer(props: Props) {
   const { song, onFullScreen: propsFullScreen } = props
-  console.log('song:::::', song)
   const { fullScreen, playing, percent } = props;
   const { clickPlaying, } = props;
+  if(!song || Object.keys(song).length === 0){
+    return null
+  }
   return (
     <View style={styles.miniContainer} pointerEvents={'auto'}>
       <View style={{flex: 1, flexDirection: 'row', alignItems: "center"}}>

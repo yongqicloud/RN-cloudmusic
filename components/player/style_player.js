@@ -16,8 +16,8 @@ export default StyleSheet.create({
   backgroundVideo: {
     position: 'absolute',
     // zIndex: 9999,
-    width: 0,
-    height: 0,
+    width: 1,
+    height: 1,
     left: 0,
     bottom: 0,
   }

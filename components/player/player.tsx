@@ -15,10 +15,12 @@ import {
   changeFullScreen
 } from "./store/actionCreators";
 import { getSongUrl, isEmptyObject, findIndex, shuffle }from '../../api/utils'
+import { playMode } from '../../api/config'
+import { isImmutable } from 'immutable'
 // import { playList } from './mock.js'
 function Player(props) {
   const [isUpdateProgress, setIsUpdateProgress] = useState(false)
-  const [isLooping, setIsLooping] = useState(true)
+  const [isLooping, setIsLooping] = useState(false)
   const [songUrl, setSongUrl]= useState('')
   //目前播放时间
   const [currentTime, setCurrentTime] = useState(0);
@@ -36,11 +38,27 @@ function Player(props) {
     playList: immutablePlayList,
     sequencePlayList: immutableSequencePlayList
   } = props // mapState
+  // console.log('是否是不可变数据:::',isImmutable(immutableCurrentSong))
+  let currentSong, playList, sequencePlayList
+  if(isImmutable(immutableCurrentSong)){
+    currentSong = immutableCurrentSong.toJS()
+  }else{
+    currentSong = immutableCurrentSong
+  }
+  if(isImmutable(immutablePlayList)){
+    playList = immutablePlayList.toJS();
+  }else{
+    playList = immutablePlayList
+  }
+  if(isImmutable(immutableSequencePlayList)){
+    sequencePlayList = immutableSequencePlayList.toJS();
+  }else{
+    sequencePlayList = immutableSequencePlayList
+  }
   // const currentSong = immutableCurrentSong.toJS()
-  const currentSong = immutableCurrentSong.toJS()
   // console.log('immutableCurrentSong::::',immutableCurrentSong)
-  const playList = immutablePlayList.toJS();
-  const sequencePlayList = immutableSequencePlayList.toJS();
+  // const playList = immutablePlayList.toJS();
+  // const sequencePlayList = immutableSequencePlayList.toJS();
   const { 
     toggleFullScreenDispatch, 
     togglePlayingDispatch,
@@ -50,42 +68,10 @@ function Player(props) {
     changePlayListDispatch
   } = props
 
-  console.log('currentIndex:::',currentIndex)
-  // mock数据
-  const id = 1416767593;
-  // const currentSong = {
-  //   al: { picUrl: "https://p1.music.126.net/JL_id1CFwNJpzgrXwemh4Q==/109951164172892390.jpg" },
-  //   name: "木偶人",
-  //   ar: [{name: "薛之谦"}]
-  // }
+  // const id = 1416767593;
   const videoRef: any = useRef()
-  // useEffect(()=>{
-  //   const loadAudio = async ()=> {
-  //     const soundObject = new Audio.Sound();
-  //     try {
-  //       await soundObject.loadAsync({
-  //         uri: 'http://win.web.rh01.sycdn.kuwo.cn/9ab9bba8ae01e47922503311b96fb112/5e86e6ba/resource/n3/94/53/2526909011.mp3'
-  //       });
-  //       const result = await soundObject.getStatusAsync()
-  //       console.log('result:::::',result)
-  //       // 自动播放
-  //       await soundObject.playAsync();
-  //       setTimeout(()=>{
-  //         soundObject.pauseAsync();
-  //       },3000)
-  //     } catch (error) {
-  //       console.warn("ERROR LOADING AUDIO: ", error);
-  //     }
-  //   }
-  //   // loadAudio()
-  // },[])
-
-  const onPlaybackStatusUpdate = (e)=> {
-    let currentPosition = e.positionMillis / 1000
-    // 如果当前在拖动进度条修改时间，则不理睬
-    setCurrentTime(currentPosition)
-    // console.log('e:::::',e)
-  }
+ 
+  
   const _onFullScreen = () => {
     // dispatch({type:'zoom'})
     toggleFullScreenDispatch(true)
@@ -97,21 +83,24 @@ function Player(props) {
     togglePlayingDispatch(!playing)
   }
   const _changeProgress = (value) => {
+    // console.log(value)
     setIsUpdateProgress(true)
     const current = duration * value / 100
     setCurrentTime(current)
     videoRef.current.setPositionAsync(current * 1000)
-    togglePlayingDispatch(true)
-  }
-  const _handleLoop = () => {
-    // videoRef.current.setPositionAsync(0)
-    // videoRef.current.playAsync()
-    if(!isLooping){
-      setIsLooping(true)
-    }
     if(!playing){
       togglePlayingDispatch(true)
     }
+  }
+  const _handleLoop = () => {
+    // videoRef.current.setPositionAsync(0)
+    videoRef.current && videoRef.current.replayAsync()
+    // if(!isLooping){
+    //   setIsLooping(true)
+    // }
+    togglePlayingDispatch(true)
+    // if(!playing){
+    // }
   }
   const _handlePrev = () => {
     if(playList.length === 1){
@@ -139,13 +128,14 @@ function Player(props) {
     if(!playing){
       togglePlayingDispatch(true)
     }
+
     changeCurrentIndexDispatch(index)
   }
   const _changePlayMode = () => {
     let newMode = (mode + 1) % 3
     if(newMode === 0){
-      changePlayListDispatch(sequencePlayList)
       let index = findIndex(currentSong, sequencePlayList)
+      changePlayListDispatch(sequencePlayList)
       changeCurrentIndexDispatch(index)
     }else if(newMode === 1){
       changePlayListDispatch(sequencePlayList)
@@ -157,8 +147,31 @@ function Player(props) {
     }
     changeModeDispatch(newMode)
   }
+  const _onVideoStop = () => {
+    console.log('播放完成')
+    // _handleNext();
+    if (mode === playMode.loop) {
+      _handleLoop();
+    } else {
+      _handleNext();
+    }
+  }
+  const _onPlaybackStatusUpdate = (e)=> {
+    // 单曲播放结束
+    if(e.didJustFinish){
+      console.log('statue::', e)
+      togglePlayingDispatch(false)
+      _onVideoStop()
+      return 
+    }
+    let currentPosition = e.positionMillis / 1000
+    // 如果当前在拖动进度条修改时间，则不理睬
+    setCurrentTime(currentPosition)
+    // console.log('e:::::',e)
+  }
   
   useEffect(()=>{
+    console.log('播放状态:::',playing)
     videoRef.current
       ? playing 
         ? videoRef.current.playAsync()
@@ -166,34 +179,50 @@ function Player(props) {
       : null
   },[playing])
 
+  // useEffect(()=>{
+  //   if(!playList.length || currentIndex === -1 || !playList[currentIndex] ) {
+  //     console.log('error:::::')
+  //     return
+  //   }
+  //   let current = playList[0];
+  //   changeCurrentIndexDispatch(0)
+  //   changeCurrentDispatch(current);//赋值currentSong
+  //   setCurrentTime(0);//从头开始播放
+  //   setDuration((current.dt / 1000) | 0);//时长
+  //   setSongUrl(getSongUrl(current.id));
+  //   if(!playing){
+  //     togglePlayingDispatch(true);//播放状态;
+  //   }
+  // },[])
+
   useEffect(()=>{
-    if (
-        !playList.length ||
-        currentIndex === -1 ||
-        !playList[currentIndex] 
-        // playList[currentIndex].id === preSong.id ||
-      ) {
-        console.log('error:::::')
-        return
-      }
-    changeCurrentIndexDispatch(currentIndex)
+    if(!playList.length || currentIndex === -1 || !playList[currentIndex] ) {
+      console.log('暂无资源:::::')
+      return
+    }
     let current = playList[currentIndex];
-    // console.log('current::::',current.id)
-    // changeCurrentDispatch(current);//赋值currentSong
-    // setSongUrl(getSongUrl(current.id))
-    // togglePlayingDispatch(true);//播放状态
-    // setCurrentTime(0);//从头开始播放
-    // setDuration((current.dt / 1000) | 0);//时长
-  },[currentIndex, playList])
+    changeCurrentDispatch(current);//赋值currentSong
+    setCurrentTime(0);//从头开始播放
+    setDuration((current.dt / 1000) | 0);//时长
+    videoRef.current && 
+    videoRef.current.loadAsync({uri: getSongUrl(current.id)}).playAsync;
+    setTimeout(()=>{
+      videoRef.current.playAsync()
+    },500)
+    if(!playing){
+      togglePlayingDispatch(true);//播放状态;
+    }
+  },[currentIndex,playList])
 
   if(isEmptyObject(currentSong)){
+    console.log('空对象,return')
     return null
   }
+  // console.log('可以播放：：：',currentIndex)
   return (
       <View 
         style={styles.playerContainer}
         pointerEvents={fullScreen ? 'auto' : 'box-none'}
-        // pointerEvents={ 'box-none'}
       >
         <NormalPlayer 
           song={currentSong} 
@@ -218,17 +247,15 @@ function Player(props) {
           clickPlaying={_clickPlaying}
         ></MiniPlayer>
         <Video 
-          // source={{uri: `https://music.163.com/song/media/outer/url?id=${id}.mp3` }} 
-          source={{uri: songUrl }} 
-          // source={{uri: `http://vfx.mtime.cn/Video/2019/03/19/mp4/190319212559089721.mp4` }} 
+          ref={videoRef}
+          // source={{uri: songUrl }} 
           rate={1.0}
           volume={1.0}
           isMuted={false}
           resizeMode="cover"
           shouldPlay
           isLooping
-          ref={videoRef}
-          onPlaybackStatusUpdate={onPlaybackStatusUpdate}
+          onPlaybackStatusUpdate={_onPlaybackStatusUpdate}
           style={styles.backgroundVideo}
         >
         </Video>

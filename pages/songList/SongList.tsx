@@ -8,6 +8,7 @@ import {
   changeCurrentIndex, 
   changeSequecePlayList 
 } from '../../components/player/store/actionCreators';
+import { isImmutable } from 'immutable'
 interface Props{
   songs:Array<object>,
   collectCount: number,
@@ -83,7 +84,7 @@ function SongList(props: Props) {
           onRefresh={_handleRefresh}
           renderItem={_handleRenderItem}
           onEndReachedThreshold={0.1}
-          onEndReached={_handleReachEnd}
+          // onEndReached={_handleReachEnd}
         >
         </FlatList>
         </View>

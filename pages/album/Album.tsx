@@ -67,7 +67,6 @@ function Album(props) {
         snapToAlignment='center'
       >
         <AlbumDetail currentAlbum={currentAlbumJs}></AlbumDetail>
-       
       </ScrollView>
     </View>
   )
